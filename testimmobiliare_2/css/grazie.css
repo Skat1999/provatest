@@ -1,0 +1,12 @@
+*{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#1a2e1f;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+    .box{text-align:center;max-width:520px}
+    .icon{width:64px;height:64px;border:1.5px solid #b8976a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 32px}
+    .icon svg{width:28px;height:28px;stroke:#b8976a;fill:none;stroke-width:1.5}
+    .label{font-size:10px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:#b8976a;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:12px}
+    .label::before,.label::after{content:'';width:28px;height:1px;background:#b8976a}
+    h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:48px;font-weight:300;color:#fafaf8;line-height:1.1;margin-bottom:20px}
+    h1 em{font-style:italic;color:#d4b48a}
+    p{font-size:15px;font-weight:300;color:rgba(245,242,236,.65);line-height:1.8;margin-bottom:40px}
+    a{display:inline-block;font-size:11.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#1a2e1f;background:#b8976a;padding:15px 36px;transition:background .2s}
+    a:hover{background:#d4b48a}
