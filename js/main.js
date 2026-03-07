@@ -450,15 +450,16 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   const dirClass = { up:'sr-up', down:'sr-down', left:'sr-left', right:'sr-right' };
 
-  const observer = new IntersectionObserver(function(entries){
+const observer = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){
         entry.target.classList.add('sr-vis');
-        observer.unobserve(entry.target);
+      } else {
+        entry.target.classList.remove('sr-vis'); // Questo toglie la classe quando l'elemento esce dallo schermo
       }
     });
   }, { threshold: 0.15 });
-
+  
   targets.forEach(function(t){
     document.querySelectorAll(t.sel).forEach(function(el){
       el.classList.add('sr');
