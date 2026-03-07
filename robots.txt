@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Utility pages not intended for organic search
+Disallow: /grazie.html
+Disallow: /underconstruction.html
+Disallow: /manutenzione.html
+
+Sitemap: https://www.mgmgestioni.it/sitemap.xml
