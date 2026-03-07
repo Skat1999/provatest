@@ -349,15 +349,40 @@ window.addEventListener('DOMContentLoaded',()=>{
   }
 })();
 
-// ── Script block 3 ──
+// ── Script block 3 e 4 (Unificati per ripetizione allo scroll) ──
 (function(){
+  const el1 = document.getElementById('heroLine1');
+  const el2 = document.getElementById('heroLine2');
+  const logo = document.getElementById('heroLogo');
+  const logoMGM = document.getElementById('logoMGM');
+  const logoSub = document.getElementById('logoSub');
+
+  if(!el1 || !el2) return;
+
+  const line1 = "Gestiamo e valorizziamo";
+  const line2 = "il tuo patrimonio";
+
+  // Funzione che svuota le scritte quando l'utente va verso il basso
+  function resetHero() {
+    el1.innerHTML = '';
+    el2.innerHTML = '';
+    el2.classList.remove('shimmer-on');
+    
+    if(logoMGM) logoMGM.innerHTML = '';
+    if(logoSub) logoSub.innerHTML = '';
+    if(logo) {
+      logo.style.transition = 'none';
+      logo.style.opacity = '0';
+    }
+  }
+
+  // Funzione che crea le lettere animate
   function animateLine(text, el, startDelay, speed, onDone){
     text.split('').forEach((ch, i) => {
       const s = document.createElement('span');
       s.className = 'letter';
       s.textContent = ch === ' ' ? ' ' : ch;
-      const delay = startDelay + i * speed;
-      s.style.animationDelay = delay + 's';
+      s.style.animationDelay = (startDelay + i * speed) + 's';
       el.appendChild(s);
     });
     if(onDone){
@@ -366,32 +391,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     }
   }
 
-  const line1 = "Gestiamo e valorizziamo";
-  const line2 = "il tuo patrimonio";
-  const el1 = document.getElementById('heroLine1');
-  const el2 = document.getElementById('heroLine2');
-  const logo = document.getElementById('heroLogo');
-
-  if(!el1 || !el2) return;
-
-  // Line 1 - faster
-  animateLine(line1, el1, 0.1, 0.055, null);
-
-  // Line 2 starts after line 1 finishes
-  const line1End = 0.1 + line1.length * 0.055 + 0.2;
-  animateLine(line2, el2, line1End, 0.09, function(){
-    // Add shimmer to patrimoni
-    el2.classList.add('shimmer-on');
-    // Reveal logo
-    if(logo){
-      logo.style.transition='opacity 1s ease';
-      logo.style.opacity='1';
-    }
-  });
-})();
-
-// ── Script block 4 ──
-(function(){
+  // Funzione che crea le lettere del logo
   function buildLogoLetters(el, text, baseDelay){
     if(!el) return;
     text.split('').forEach((ch, i) => {
@@ -402,9 +402,41 @@ window.addEventListener('DOMContentLoaded',()=>{
       el.appendChild(s);
     });
   }
-  buildLogoLetters(document.getElementById('logoMGM'), 'MGM', 0);
-  buildLogoLetters(document.getElementById('logoSub'), 'asset management', 0.5);
+
+  // Funzione che fa partire tutta l'animazione della Hero
+  function playHero() {
+    resetHero(); // Assicuriamoci che sia pulito prima di scrivere
+    
+    animateLine(line1, el1, 0.1, 0.055, null);
+    
+    const line1End = 0.1 + line1.length * 0.055 + 0.2;
+    animateLine(line2, el2, line1End, 0.09, function(){
+      el2.classList.add('shimmer-on');
+      if(logo){
+        logo.style.transition = 'opacity 1s ease';
+        logo.style.opacity = '1';
+      }
+    });
+
+    buildLogoLetters(logoMGM, 'MGM', 0);
+    buildLogoLetters(logoSub, 'asset management', 0.5);
+  }
+
+  // Osservatore che guarda se la Hero è visibile sullo schermo
+  const heroSection = el1.closest('section') || el1.parentElement;
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        playHero(); // Se sei in cima, fai partire le scritte
+      } else {
+        resetHero(); // Se sei sceso, svuota tutto per prepararti al prossimo scroll
+      }
+    });
+  }, { threshold: 0.1 });
+
+  heroObserver.observe(heroSection);
 })();
+
 
 // ── Script block 5 — Scroll Reveal (reconstructed) ──
 (function(){
